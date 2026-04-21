@@ -55,9 +55,13 @@ body{font-family:var(--f);background:var(--bg);color:var(--txt);-webkit-font-smo
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   background:linear-gradient(160deg,#080a10 0%,#0d0f1a 40%,#0a1410 100%);
   gap:0;
-  transition:opacity .6s,visibility .6s;
+  /* Starts invisible — JS fades it in after a short delay so browser has painted */
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .55s ease;
 }
-#brand-splash.gone{opacity:0;visibility:hidden;pointer-events:none}
+#brand-splash.bs-in{opacity:1;pointer-events:all}
+#brand-splash.bs-out{opacity:0;pointer-events:none}
 
 .bs-icon{
   width:clamp(100px,24vw,160px);
@@ -124,9 +128,12 @@ body{font-family:var(--f);background:var(--bg);color:var(--txt);-webkit-font-smo
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   gap:24px;
   background:linear-gradient(160deg,#080a10 0%,#0d0f1a 40%,#0a1410 100%);
-  transition:opacity .5s,visibility .5s;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .55s ease;
 }
-#theme-splash.gone{opacity:0;visibility:hidden;pointer-events:none}
+#theme-splash.ts-in{opacity:1;pointer-events:all}
+#theme-splash.ts-out{opacity:0;pointer-events:none}
 
 .ts-logo{display:flex;align-items:center;gap:12px;margin-bottom:4px}
 .ts-logo img{width:44px;height:44px;border-radius:24%;box-shadow:0 4px 16px rgba(201,168,76,.3)}
@@ -789,15 +796,21 @@ function saveData(){
 //  SPLASH FLOW
 // ══════════════════════════
 function showThemeSplash(){
-  document.getElementById('brand-splash').classList.add('gone');
-  document.getElementById('theme-splash').classList.remove('gone');
-  // if already picked, skip
-  const saved=localStorage.getItem('jvox-theme');
-  if(saved){pickTheme(saved)}
+  // Fade out brand splash
+  const bs=document.getElementById('brand-splash');
+  bs.classList.remove('bs-in');
+  bs.classList.add('bs-out');
+  // Fade in theme picker after brand finishes fading
+  setTimeout(()=>{
+    const ts=document.getElementById('theme-splash');
+    ts.classList.add('ts-in');
+  }, 400);
 }
 function pickTheme(t){
   S.theme=t;ls('jvox-theme',t);
-  document.getElementById('theme-splash').classList.add('gone');
+  const ts=document.getElementById('theme-splash');
+  ts.classList.remove('ts-in');
+  ts.classList.add('ts-out');
   applyTheme(t);
 }
 
@@ -1391,18 +1404,37 @@ function init(){
   try{const h=localStorage.getItem('jvox-history');if(h)S.history=JSON.parse(h)}catch(e){}
 
   const saved=localStorage.getItem('jvox-theme');
-  if(saved){
-    S.theme=saved;
-    document.getElementById('brand-splash').classList.add('gone');
-    document.getElementById('theme-splash').classList.add('gone');
-    applyTheme(saved);
-  } else {
-    document.getElementById('theme-splash').classList.add('gone');
-    // brand splash shows, then theme splash
-  }
 
+  // Always render app content first (it sits behind the splash)
   renderCats();renderSyms();showView('cats');
   if(window.speechSynthesis){window.speechSynthesis.onvoiceschanged=populateVoices;populateVoices()}
+
+  if(saved){
+    // RETURNING USER — theme known, show brand splash as a 2.5s loading screen
+    S.theme=saved;
+    applyTheme(saved);
+
+    const bs=document.getElementById('brand-splash');
+    // Swap button for a softer returning message
+    const btn=bs.querySelector('.bs-enter');
+    const sub=bs.querySelector('.bs-sub');
+    if(btn){ btn.textContent='Welcome back'; btn.style.pointerEvents='none'; btn.style.opacity='0.7'; }
+    if(sub){ sub.textContent='Loading your app…'; }
+
+    // setTimeout gives the browser a real chance to paint before we transition
+    setTimeout(()=>{
+      bs.classList.add('bs-in');           // fade IN
+      setTimeout(()=>{
+        bs.classList.remove('bs-in');
+        bs.classList.add('bs-out');        // fade OUT after 2.5s
+      }, 2500);
+    }, 50);
+
+  } else {
+    // FIRST TIME — show brand splash with Get Started button -> theme picker
+    const bs=document.getElementById('brand-splash');
+    setTimeout(()=>bs.classList.add('bs-in'), 50);
+  }
 
   // PWA service worker (inline)
   if('serviceWorker' in navigator){
