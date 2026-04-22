@@ -10,7 +10,7 @@
 <meta name="application-name" content="J-VOX AAC">
 <meta name="description" content="J-VOX AAC — Augmentative and Alternative Communication App">
 <link rel="manifest" id="pwa-manifest">
-<title>J-VOX AAC</title>
+<title>J-VOX AAC v2</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
@@ -401,6 +401,370 @@ body.mic-on #mic-btn{background:rgba(0,180,160,.2)!important;border-color:var(--
 .ibtn{width:32px;height:32px;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:var(--txt2);display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .14s;cursor:pointer}
 .theme-story .ibtn{background:rgba(255,140,0,.06)}
 .ibtn:hover{border-color:var(--border2);color:var(--txt)}.ibtn:active{transform:scale(.9)}
+
+/* ══ V2: MODE TOGGLE ══ */
+#mode-toggle{
+  display:flex;align-items:center;gap:6px;padding:3px 4px;
+  border-radius:20px;border:1px solid var(--border2);background:var(--bg3);
+  flex-shrink:0;
+}
+.mt-btn{
+  padding:4px 11px;border-radius:16px;font-size:11px;font-weight:700;
+  letter-spacing:.04em;text-transform:uppercase;transition:all .2s;
+  border:none;cursor:pointer;background:transparent;color:var(--txt3);
+}
+.mt-btn.active{
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  color:#0d0d0f;box-shadow:0 2px 8px var(--aglow);
+}
+body.theme-story .mt-btn.active{color:#fff}
+.mt-aura.active{
+  background:linear-gradient(135deg,#7c3aed,#a855f7);
+  color:#fff;box-shadow:0 2px 8px rgba(124,58,237,.35);
+}
+
+/* ══ V2: AURA TAB VIEW ══ */
+#va{position:absolute;inset:0;overflow-y:auto;padding:10px;display:none;
+  flex-direction:column;gap:10px;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+#va.active{display:flex}
+
+.aura-section{border-radius:var(--rc);border:1px solid var(--border2);background:var(--bg3);overflow:hidden}
+.aura-sec-hdr{
+  display:flex;align-items:center;gap:9px;padding:11px 14px;
+  background:var(--bg4);border-bottom:1px solid var(--border);
+  font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--txt2);
+  cursor:pointer;user-select:none;transition:background .15s;
+}
+.aura-sec-hdr:hover{background:var(--bg3)}
+.aura-sec-hdr .aura-icon{font-size:18px}
+.aura-sec-hdr .aura-title{flex:1}
+.aura-sec-hdr .aura-status{
+  font-size:10px;font-weight:600;padding:2px 8px;border-radius:12px;
+  background:var(--bg3);border:1px solid var(--border);color:var(--txt3);letter-spacing:.05em;
+  transition:all .2s;
+}
+.aura-sec-hdr .aura-status.on{background:rgba(0,180,160,.15);border-color:var(--teal);color:var(--teal)}
+.aura-sec-hdr .aura-status.listening{background:rgba(220,80,80,.15);border-color:var(--red);color:var(--red);animation:pulseAnim .9s infinite}
+.aura-sec-hdr .aura-status.gps-on{background:rgba(124,92,191,.15);border-color:var(--purple);color:var(--purple)}
+
+.aura-sec-body{padding:12px 14px}
+.aura-trigger-btn{
+  width:100%;padding:10px;border-radius:var(--r);
+  border:1.5px dashed var(--border2);background:transparent;
+  font-family:var(--f);font-size:13px;font-weight:600;color:var(--txt2);
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  cursor:pointer;transition:all .15s;
+}
+.aura-trigger-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--sbg)}
+.aura-trigger-btn.scanning{
+  border-color:var(--teal);color:var(--teal);
+  animation:scanPulse 1.2s ease infinite;
+}
+@keyframes scanPulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(0,180,160,.4)}
+  50%{box-shadow:0 0 0 6px rgba(0,180,160,0)}
+}
+.aura-trigger-btn.active-listen{
+  border-color:var(--red);color:var(--red);
+  animation:scanPulse2 .8s ease infinite;
+}
+@keyframes scanPulse2{
+  0%,100%{box-shadow:0 0 0 0 rgba(220,80,80,.45)}
+  50%{box-shadow:0 0 0 6px rgba(220,80,80,0)}
+}
+
+/* AI generated buttons grid */
+.aura-btns-grid{display:grid;gap:7px;grid-template-columns:1fr 1fr;margin-top:10px}
+.aura-gen-btn{
+  border-radius:var(--r);border:1.5px solid var(--border);background:var(--bg4);
+  padding:11px 10px;font-family:var(--f);font-size:13px;font-weight:600;
+  color:var(--txt);text-align:center;line-height:1.25;
+  display:flex;flex-direction:column;align-items:center;gap:5px;
+  cursor:pointer;transition:all .15s;animation:chipIn .2s ease;
+}
+.aura-gen-btn:hover{border-color:var(--accent);background:var(--phhov);box-shadow:0 4px 14px var(--aglow)}
+.aura-gen-btn:active{transform:scale(.92)}
+.aura-gen-btn .ag-tag{
+  font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;
+  padding:2px 7px;border-radius:10px;
+  background:rgba(201,168,76,.15);color:var(--gold);border:1px solid rgba(201,168,76,.3);
+}
+.aura-gen-btn.identity .ag-tag{background:rgba(0,180,160,.12);color:var(--teal);border-color:rgba(0,180,160,.28)}
+.aura-gen-btn.request .ag-tag{background:rgba(124,92,191,.12);color:var(--purple);border-color:rgba(124,92,191,.28)}
+.aura-gen-btn.social .ag-tag{background:rgba(201,168,76,.12);color:var(--gold);border-color:rgba(201,168,76,.28)}
+.aura-gen-btn.comment .ag-tag{background:rgba(0,180,160,.08);color:var(--teal2);border-color:rgba(0,180,160,.2)}
+.aura-gen-btn.choice-btn .ag-tag{background:rgba(220,80,80,.1);color:var(--red);border-color:rgba(220,80,80,.25)}
+.aura-gen-btn.loading{opacity:.5;pointer-events:none}
+
+.aura-empty{text-align:center;padding:18px;color:var(--txt3);font-size:13px;font-style:italic}
+.aura-preview{
+  border-radius:9px;background:var(--bg4);border:1px solid var(--border);
+  padding:9px 12px;font-size:12px;color:var(--txt2);margin-top:8px;line-height:1.4;
+}
+.aura-preview strong{color:var(--txt);font-size:11px;text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:3px}
+
+/* Geo sense */
+.geo-location{
+  display:flex;align-items:center;gap:8px;padding:9px 12px;
+  border-radius:9px;background:var(--bg4);border:1px solid var(--border);
+  font-size:13px;color:var(--txt2);margin-bottom:10px;
+}
+.geo-location .geo-icon{font-size:18px}
+.geo-label{flex:1}
+.geo-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;background:rgba(124,92,191,.15);color:var(--purple);border:1px solid rgba(124,92,191,.3)}
+
+/* ══ V2: REGULATE TAB VIEW ══ */
+#vr{position:absolute;inset:0;overflow-y:auto;padding:10px;display:none;
+  flex-direction:column;gap:10px;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+#vr.active{display:flex}
+
+.reg-section{border-radius:var(--rc);border:1px solid var(--border2);background:var(--bg3);overflow:hidden}
+.reg-hdr{
+  padding:12px 14px;background:var(--bg4);border-bottom:1px solid var(--border);
+  font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--txt2);
+  display:flex;align-items:center;gap:8px;
+}
+.reg-hdr .reg-icon{font-size:18px}
+.reg-body{padding:14px}
+
+/* Zen overlay */
+#zen-overlay{
+  position:fixed;inset:0;z-index:5000;
+  background:#000;opacity:0;pointer-events:none;
+  transition:opacity .8s ease;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+}
+#zen-overlay.active{opacity:1;pointer-events:all}
+
+/* Canvas fills the whole overlay */
+#zen-canvas{
+  position:absolute;inset:0;width:100%;height:100%;
+  pointer-events:none;
+}
+
+/* Central breathing circle */
+#zen-ring-wrap{
+  position:relative;z-index:2;
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:28px;
+}
+#zen-breath-ring{
+  width:clamp(140px,34vw,200px);height:clamp(140px,34vw,200px);
+  border-radius:50%;
+  border:1.5px solid rgba(255,255,255,.08);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+  animation:zenBreathRing 4s ease-in-out infinite;
+}
+#zen-breath-ring::before{
+  content:'';position:absolute;inset:-8px;border-radius:50%;
+  border:1px solid rgba(201,168,76,.12);
+  animation:zenBreathRing 4s ease-in-out infinite .5s;
+}
+#zen-breath-ring::after{
+  content:'';position:absolute;inset:-20px;border-radius:50%;
+  border:1px solid rgba(201,168,76,.05);
+  animation:zenBreathRing 4s ease-in-out infinite 1s;
+}
+@keyframes zenBreathRing{
+  0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(201,168,76,0)}
+  50%{transform:scale(1.18);box-shadow:0 0 60px 10px rgba(201,168,76,.06)}
+}
+
+#zen-inner-dot{
+  width:32px;height:32px;border-radius:50%;
+  background:radial-gradient(circle at 35% 35%,rgba(201,168,76,.6),rgba(201,168,76,.15));
+  box-shadow:0 0 20px rgba(201,168,76,.25);
+  animation:zenDotPulse 4s ease-in-out infinite;
+}
+@keyframes zenDotPulse{
+  0%,100%{transform:scale(1);opacity:.7}
+  50%{transform:scale(1.4);opacity:1}
+}
+
+/* Phase words */
+#zen-phase{
+  font-family:'Playfair Display',Georgia,serif;
+  font-size:clamp(13px,3vw,18px);
+  color:rgba(255,255,255,.28);
+  letter-spacing:.35em;text-transform:uppercase;text-align:center;
+  transition:opacity .6s ease,transform .6s ease;
+  min-height:1.4em;
+}
+#zen-phase.fade{opacity:0;transform:translateY(6px)}
+
+/* Sound mode toggle */
+#zen-sound-btns{
+  position:absolute;top:24px;left:50%;transform:translateX(-50%);
+  display:flex;gap:6px;z-index:3;
+}
+.zen-sound-btn{
+  padding:5px 14px;border-radius:20px;font-size:11px;font-weight:700;
+  letter-spacing:.06em;text-transform:uppercase;
+  border:1px solid rgba(255,255,255,.15);background:transparent;
+  color:rgba(255,255,255,.35);cursor:pointer;transition:all .2s;
+}
+.zen-sound-btn.active{
+  border-color:rgba(201,168,76,.5);color:rgba(201,168,76,.8);
+  background:rgba(201,168,76,.07);
+}
+.zen-sound-btn:hover{border-color:rgba(255,255,255,.3);color:rgba(255,255,255,.6)}
+
+/* Volume knob */
+#zen-vol-wrap{
+  position:absolute;top:24px;right:24px;z-index:3;
+  display:flex;align-items:center;gap:8px;
+}
+#zen-vol-wrap label{font-size:11px;color:rgba(255,255,255,.3);letter-spacing:.06em}
+#zen-vol{width:80px;accent-color:rgba(201,168,76,.7);opacity:.6;cursor:pointer}
+#zen-vol:hover{opacity:1}
+
+/* Close */
+.zen-close{
+  position:absolute;bottom:36px;right:28px;z-index:3;
+  padding:9px 20px;border-radius:30px;border:1px solid rgba(255,255,255,.12);
+  background:transparent;color:rgba(255,255,255,.3);font-size:12px;font-weight:600;
+  cursor:pointer;transition:all .2s;letter-spacing:.04em;
+}
+.zen-close:hover{border-color:rgba(255,255,255,.35);color:rgba(255,255,255,.65)}
+
+#zen-btn{
+  width:100%;padding:13px;border-radius:var(--rc);
+  background:linear-gradient(135deg,#0d0d0f,#17171c);border:1.5px solid rgba(255,255,255,.1);
+  color:var(--txt2);font-family:var(--f);font-size:14px;font-weight:600;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  cursor:pointer;transition:all .2s;letter-spacing:.04em;
+}
+#zen-btn:hover{border-color:rgba(255,255,255,.22);color:var(--txt)}
+
+/* Audio slots */
+.audio-matrix{display:flex;flex-direction:column;gap:8px}
+.audio-slot{
+  display:flex;align-items:center;gap:9px;padding:10px 12px;
+  border-radius:var(--r);border:1px solid var(--border);background:var(--bg4);
+  transition:all .15s;
+}
+.audio-slot:hover{border-color:var(--border2)}
+.slot-num{
+  width:26px;height:26px;border-radius:50%;
+  background:var(--bg3);border:1px solid var(--border2);
+  font-size:11px;font-weight:700;color:var(--txt3);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.slot-label{flex:1;font-size:13px;color:var(--txt2);font-style:italic}
+.slot-label.has-audio{font-style:normal;color:var(--txt)}
+.slot-actions{display:flex;gap:5px}
+.slot-btn{
+  width:30px;height:30px;border-radius:7px;border:1px solid var(--border);
+  background:var(--bg3);font-size:13px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;transition:all .14s;color:var(--txt2);
+}
+.slot-btn:hover{border-color:var(--accent);color:var(--accent)}
+.slot-btn.play-btn:hover{border-color:var(--teal);color:var(--teal)}
+.slot-btn.rec-btn:hover{border-color:var(--red);color:var(--red)}
+.slot-btn.rec-btn.recording{background:rgba(220,80,80,.15);border-color:var(--red);color:var(--red);animation:micP 1s infinite}
+.slot-btn.play-btn.playing{background:rgba(0,180,160,.15);border-color:var(--teal);color:var(--teal)}
+.silence-all-btn{
+  width:100%;padding:11px;border-radius:var(--r);
+  border:1px solid rgba(220,80,80,.3);background:rgba(220,80,80,.07);
+  color:var(--red);font-family:var(--f);font-size:13px;font-weight:700;
+  cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:6px;
+  margin-top:10px;
+}
+.silence-all-btn:hover{background:rgba(220,80,80,.14);border-color:var(--red)}
+.silence-all-btn:active{transform:scale(.95)}
+
+/* ══ V2: VIEW BAR additions ══ */
+#vbar{overflow-x:auto;scrollbar-width:none}
+#vbar::-webkit-scrollbar{display:none}
+.vb{white-space:nowrap;flex-shrink:0}
+
+/* Aura/Regulate tabs hidden until Aura mode toggled */
+#vb-aura,#vb-reg{display:none}
+body.aura-mode #vb-aura,body.aura-mode #vb-reg{display:flex}
+
+/* Aura glow when active */
+#vb-aura.on{color:#a855f7;border-bottom-color:#a855f7}
+body.aura-mode #vb-aura{animation:auraPulseTab 2s ease-in-out infinite}
+@keyframes auraPulseTab{0%,100%{color:#a855f7}50%{color:#c084fc}}
+#vb-reg.on{color:var(--teal);border-bottom-color:var(--teal)}
+
+/* Geo context override picker */
+.geo-location{cursor:pointer;transition:background .15s}
+.geo-location:hover{background:var(--bg3)}
+.geo-edit-hint{font-size:10px;color:var(--txt3);margin-top:6px;text-align:center}
+
+.geo-ctx-picker{
+  display:none;margin-top:10px;
+  border-radius:var(--r);border:1px solid var(--border2);background:var(--bg4);overflow:hidden;
+}
+.geo-ctx-picker.open{display:block}
+.geo-ctx-title{
+  padding:8px 12px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--txt3);background:var(--bg3);border-bottom:1px solid var(--border);
+}
+.geo-ctx-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border)}
+.geo-ctx-item{
+  padding:10px 6px;background:var(--bg4);text-align:center;cursor:pointer;
+  font-size:11px;font-weight:600;color:var(--txt2);transition:all .14s;
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+}
+.geo-ctx-item:hover{background:var(--phhov);color:var(--accent)}
+.geo-ctx-item.current{color:var(--teal);background:rgba(0,180,160,.06)}
+.geo-ctx-item .ctx-em{font-size:20px}
+.geo-ctx-item .ctx-lbl{font-size:10px}
+.geo-ctx-save-note{
+  padding:8px 12px;font-size:11px;color:var(--txt3);
+  border-top:1px solid var(--border);text-align:center;
+}
+
+/* Camera modal */
+#camera-modal{
+  position:fixed;inset:0;z-index:3000;background:rgba(0,0,0,.92);
+  display:none;flex-direction:column;align-items:center;justify-content:center;gap:16px;
+}
+#camera-modal.open{display:flex}
+#camera-video{
+  width:min(100vw,480px);height:min(60vh,360px);object-fit:cover;
+  border-radius:var(--rc);border:2px solid rgba(255,255,255,.15);background:#000;
+}
+#camera-canvas{display:none}
+.cam-btns{display:flex;gap:12px;align-items:center}
+.cam-capture-btn{
+  width:68px;height:68px;border-radius:50%;border:3px solid #fff;
+  background:rgba(255,255,255,.15);font-size:24px;
+  cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;
+}
+.cam-capture-btn:hover{background:rgba(255,255,255,.3);transform:scale(1.05)}
+.cam-capture-btn:active{transform:scale(.95)}
+.cam-close-btn{
+  position:absolute;top:20px;right:20px;
+  width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.15);
+  font-size:18px;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:background .15s;
+}
+.cam-close-btn:hover{background:rgba(255,255,255,.25)}
+.cam-label{color:rgba(255,255,255,.5);font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+
+/* ══ V2: GLOBAL MODE INDICATOR ══ */
+#aura-indicator{
+  display:none;position:fixed;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,#a855f7,#c084fc,transparent);
+  z-index:999;animation:auraBar 2s ease infinite;pointer-events:none;
+}
+@keyframes auraBar{0%,100%{opacity:.4}50%{opacity:1}}
+body.aura-mode #aura-indicator{display:block}
+
+/* Bright theme overrides for new elements */
+body.theme-story .aura-gen-btn .ag-tag{font-family:var(--f)}
+body.theme-story #zen-btn{background:linear-gradient(135deg,#f0f0f0,#fff);border-color:rgba(0,0,0,.1);color:#555}
+body.theme-story .audio-slot{border-color:rgba(255,140,0,.2)}
+body.theme-story .slot-num{background:rgba(255,140,0,.08);border-color:rgba(255,140,0,.25)}
+body.theme-story .aura-section{border-color:rgba(255,140,0,.22)}
+body.theme-story .reg-section{border-color:rgba(255,140,0,.22)}
+body.theme-story .aura-sec-hdr{background:rgba(255,140,0,.06)}
+body.theme-story .reg-hdr{background:rgba(255,140,0,.06)}
+body.theme-story #vb-aura.on{color:#7c3aed;border-bottom-color:#7c3aed}
 </style>
 </head>
 <body class="theme-laz">
@@ -434,13 +798,61 @@ body.mic-on #mic-btn{background:rgba(0,180,160,.2)!important;border-color:var(--
   </div>
 </div>
 
+<!-- ══ AURA MODE INDICATOR ══ -->
+<div id="aura-indicator"></div>
+
+<!-- ══ ZEN OVERLAY ══ -->
+<div id="zen-overlay">
+  <canvas id="zen-canvas"></canvas>
+
+  <!-- Sound mode selector -->
+  <div id="zen-sound-btns">
+    <button class="zen-sound-btn active" id="zsb-rain" onclick="zenSetSound('rain')">🌧 Rain</button>
+    <button class="zen-sound-btn" id="zsb-ocean" onclick="zenSetSound('ocean')">🌊 Ocean</button>
+    <button class="zen-sound-btn" id="zsb-forest" onclick="zenSetSound('forest')">🌿 Forest</button>
+    <button class="zen-sound-btn" id="zsb-tone" onclick="zenSetSound('tone')">🎵 Tones</button>
+    <button class="zen-sound-btn" id="zsb-off" onclick="zenSetSound('off')">🔇 Off</button>
+  </div>
+
+  <!-- Volume -->
+  <div id="zen-vol-wrap">
+    <label>VOL</label>
+    <input type="range" id="zen-vol" min="0" max="1" step="0.05" value="0.4" oninput="zenSetVolume(this.value)">
+  </div>
+
+  <!-- Central breathing guide -->
+  <div id="zen-ring-wrap">
+    <div id="zen-breath-ring">
+      <div id="zen-inner-dot"></div>
+    </div>
+    <div id="zen-phase">inhale</div>
+  </div>
+
+  <button class="zen-close" onclick="exitZen()">✕ Exit Zen</button>
+</div>
+
+<!-- ══ CAMERA MODAL ══ -->
+<div id="camera-modal">
+  <button class="cam-close-btn" onclick="closeCameraModal()">✕</button>
+  <video id="camera-video" autoplay playsinline muted></video>
+  <canvas id="camera-canvas"></canvas>
+  <div class="cam-label">Point camera at your environment</div>
+  <div class="cam-btns">
+    <button class="cam-capture-btn" onclick="captureFrame()" title="Capture">📸</button>
+  </div>
+</div>
+
 <!-- ══ APP ══ -->
 <div id="app">
   <header id="hdr">
     <div class="hdr-icon"><img id="hdr-img" src="" alt=""></div>
-    <div id="hdr-logo">J-VOX AAC</div>
+    <div id="hdr-logo">J-VOX <span style="font-size:10px;opacity:.5;vertical-align:middle;font-family:var(--fm)">v2</span></div>
     <div style="flex:1"></div>
-    <div style="display:flex;gap:6px">
+    <div id="mode-toggle">
+      <button class="mt-btn active" id="mt-std" onclick="setMode('standard')">Standard</button>
+      <button class="mt-btn mt-aura" id="mt-aura" onclick="setMode('aura')">✦ Aura</button>
+    </div>
+    <div style="display:flex;gap:6px;margin-left:6px">
       <button class="ibtn" id="mic-btn" onclick="toggleMic()">🎤</button>
       <button class="ibtn" onclick="openHistory()">📋</button>
       <button class="ibtn" onclick="openSettings()">⚙️</button>
@@ -462,11 +874,113 @@ body.mic-on #mic-btn{background:rgba(0,180,160,.2)!important;border-color:var(--
   <div id="vbar">
     <button class="vb on" id="vb-c" onclick="showView('cats')">📂 Categories</button>
     <button class="vb" id="vb-s" onclick="showView('syms')">🔤 Word Builder</button>
+    <button class="vb" id="vb-aura" onclick="showView('aura')">✦ Aura</button>
+    <button class="vb" id="vb-reg" onclick="showView('reg')">🌿 Regulate</button>
   </div>
   <div id="main">
     <div id="vc"></div>
     <div id="vp"></div>
     <div id="vs"></div>
+
+    <!-- ══ V2: AURA VIEW ══ -->
+    <div id="va">
+      <!-- Visual-Sense -->
+      <div class="aura-section">
+        <div class="aura-sec-hdr" onclick="toggleAuraSection('visual')">
+          <span class="aura-icon">👁</span>
+          <span class="aura-title">Visual-Sense</span>
+          <span class="aura-status" id="visual-status">Ready</span>
+        </div>
+        <div class="aura-sec-body" id="visual-body">
+          <button class="aura-trigger-btn" id="visual-scan-btn" onclick="triggerVisualScan()">
+            <span>📸</span> Scan Scene with Camera
+          </button>
+          <div id="visual-preview" class="aura-preview" style="display:none">
+            <strong>Scene Detected</strong>
+            <span id="visual-preview-text">—</span>
+          </div>
+          <div class="aura-btns-grid" id="visual-btns"></div>
+        </div>
+      </div>
+
+      <!-- Ambient-Sense -->
+      <div class="aura-section">
+        <div class="aura-sec-hdr" onclick="toggleAuraSection('ambient')">
+          <span class="aura-icon">🎙</span>
+          <span class="aura-title">Ambient-Sense</span>
+          <span class="aura-status" id="ambient-status">Ready</span>
+        </div>
+        <div class="aura-sec-body" id="ambient-body">
+          <button class="aura-trigger-btn" id="ambient-listen-btn" onclick="toggleAmbientListen()">
+            <span>🔊</span> Start Listening (10-sec buffer)
+          </button>
+          <div id="ambient-preview" class="aura-preview" style="display:none">
+            <strong>Heard</strong>
+            <span id="ambient-preview-text">—</span>
+          </div>
+          <div class="aura-btns-grid" id="ambient-btns"></div>
+        </div>
+      </div>
+
+      <!-- Geo-Sense -->
+      <div class="aura-section">
+        <div class="aura-sec-hdr" onclick="triggerGeoSense()">
+          <span class="aura-icon">📍</span>
+          <span class="aura-title">Geo-Sense</span>
+          <span class="aura-status" id="geo-status">Tap to detect</span>
+        </div>
+        <div class="aura-sec-body" id="geo-body">
+          <div id="geo-location-display" style="display:none">
+            <div class="geo-location" onclick="toggleGeoCtxPicker()" title="Tap to change context">
+              <span class="geo-icon">📍</span>
+              <span class="geo-label" id="geo-label-text">Detecting…</span>
+              <span class="geo-badge" id="geo-badge">Near</span>
+            </div>
+            <div class="geo-edit-hint">✏️ Tap location to change context</div>
+            <!-- Context override picker -->
+            <div class="geo-ctx-picker" id="geo-ctx-picker">
+              <div class="geo-ctx-title">Set your location context</div>
+              <div class="geo-ctx-grid" id="geo-ctx-grid"></div>
+              <div class="geo-ctx-save-note">Selection saves automatically</div>
+            </div>
+          </div>
+          <div class="aura-empty" id="geo-empty">Tap header to detect your location and prioritize relevant communication boards.</div>
+          <div class="aura-btns-grid" id="geo-btns"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ V2: REGULATE VIEW ══ -->
+    <div id="vr">
+      <!-- Zen Overlay -->
+      <div class="reg-section">
+        <div class="reg-hdr">
+          <span class="reg-icon">🌑</span>
+          <span>Zen Overlay</span>
+        </div>
+        <div class="reg-body">
+          <p style="font-size:12px;color:var(--txt3);margin-bottom:12px;line-height:1.5">Silences all listeners, dims the grid, and enters a calm full-screen breathing mode.</p>
+          <button id="zen-btn" onclick="enterZen()">
+            <span style="font-size:18px">🌑</span> Enter Zen Mode
+          </button>
+        </div>
+      </div>
+
+      <!-- Audio Matrix -->
+      <div class="reg-section">
+        <div class="reg-hdr">
+          <span class="reg-icon">🎵</span>
+          <span>Custom Audio Matrix</span>
+        </div>
+        <div class="reg-body">
+          <div class="audio-matrix" id="audio-matrix"></div>
+          <button class="silence-all-btn" onclick="silenceAll()">
+            🔇 Silence All
+          </button>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -474,7 +988,7 @@ body.mic-on #mic-btn{background:rgba(0,180,160,.2)!important;border-color:var(--
 <div class="ov" id="ov-set" onclick="closeOv('ov-set',event)">
   <div class="dr">
     <div class="d-hd"><span>⚙️ Settings</span><button class="d-cls" onclick="closeOv('ov-set')">✕</button></div>
-    <div class="d-sec"><div class="d-lbl">Groq API Key (Magic Wand AI)</div><input type="password" class="d-in" id="s-groq" placeholder="gsk_…"></div>
+    <div class="d-sec"><div class="d-lbl">Groq API Key <span style="font-size:9px;opacity:.6">(Magic Wand + Aura Mode)</span></div><input type="password" class="d-in" id="s-groq" placeholder="gsk_…"></div>
     <div class="d-sec"><div class="d-lbl">Voice</div><select class="d-sel" id="s-voice"><option>Loading…</option></select></div>
     <div class="d-sec"><div class="d-lbl">Speech Rate</div><div class="d-row"><span>🐢</span><input type="range" id="s-rate" min="0.5" max="1.6" step="0.1" value="0.9" style="flex:1"><span>🐇</span></div></div>
     <div class="d-sec"><div class="d-lbl">Haptic Feedback</div><div class="d-row"><button class="d-tog on" id="s-hap" onclick="this.classList.toggle('on');this.textContent=this.classList.contains('on')?'On':'Off'">On</button><span style="font-size:12px;flex:1;margin-left:8px;opacity:.6">Vibrate on tap</span></div></div>
@@ -609,10 +1123,10 @@ function injectIcons(){
 
 function injectManifest(iconSrc){
   const manifest = {
-    name:'J-VOX AAC',
+    name:'J-VOX AAC v2',
     short_name:'J-VOX',
-    description:'Augmentative and Alternative Communication App',
-    start_url:'.',
+    description:'Augmentative and Alternative Communication App — v2 with Aura Intelligence',
+    start_url:'./index.html',
     display:'standalone',
     background_color:'#0d0d0f',
     theme_color:'#0d0d0f',
@@ -836,8 +1350,14 @@ function showView(v){
   document.getElementById('vc').style.display=v==='cats'?'grid':'none';
   document.getElementById('vp').style.display=v==='phrases'?'flex':'none';
   document.getElementById('vs').style.display=v==='syms'?'block':'none';
+  const va=document.getElementById('va');if(va)va.classList.toggle('active',v==='aura');
+  const vr=document.getElementById('vr');if(vr)vr.classList.toggle('active',v==='reg');
   document.getElementById('vb-c').classList.toggle('on',v==='cats'||v==='phrases');
   document.getElementById('vb-s').classList.toggle('on',v==='syms');
+  const vba=document.getElementById('vb-aura');if(vba)vba.classList.toggle('on',v==='aura');
+  const vbr=document.getElementById('vb-reg');if(vbr)vbr.classList.toggle('on',v==='reg');
+  if(v==='aura')setTimeout(initGeoSense,200);
+  if(v==='reg')setTimeout(initAudioMatrix,200);
 }
 
 // ══════════════════════════
@@ -1395,6 +1915,780 @@ function ls(k,v){try{localStorage.setItem(k,v)}catch(e){}}
 // ══════════════════════════
 //  INIT
 // ══════════════════════════
+// ══════════════════════════
+//  V2: MODE TOGGLE
+// ══════════════════════════
+function setMode(mode){
+  const isAura=mode==='aura';
+  document.body.classList.toggle('aura-mode',isAura);
+  document.getElementById('mt-std').classList.toggle('active',!isAura);
+  document.getElementById('mt-aura').classList.toggle('active',isAura);
+  if(isAura){
+    showView('aura');
+    toast('✦ Aura Mode active');
+  } else {
+    stopAmbientListen();
+    // If currently on aura or reg tab, return to cats
+    if(S.view==='aura'||S.view==='reg')showView('cats');
+    toast('Standard Mode');
+  }
+  try{ls('jvox-mode',mode)}catch(e){}
+}
+
+// ══════════════════════════
+//  V2: ZEN OVERLAY
+// ══════════════════════════
+// ══════════════════════════════════════════════
+//  V2: ZEN MODE — generative audio + visuals
+// ══════════════════════════════════════════════
+const ZEN = {
+  active: false,
+  audioCtx: null,
+  masterGain: null,
+  nodes: [],          // all running source nodes
+  animFrame: null,
+  breathTimer: null,
+  phaseTimer: null,
+  soundMode: 'rain',
+  volume: 0.4,
+  particles: [],
+  canvas: null,
+  ctx2d: null,
+  phase: 0,           // 0=inhale 1=hold 2=exhale 3=pause
+  phaseLabels: ['inhale','hold','exhale','rest'],
+  phaseDurs:   [4000,   1500,  6000,   2000],   // ms per phase
+};
+
+// ── Particles ──────────────────────────────────────────────────────────────
+function zenInitCanvas(){
+  ZEN.canvas = document.getElementById('zen-canvas');
+  ZEN.ctx2d  = ZEN.canvas.getContext('2d');
+  function resize(){
+    ZEN.canvas.width  = window.innerWidth;
+    ZEN.canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+  ZEN.particles = [];
+  const N = Math.min(Math.floor(window.innerWidth * window.innerHeight / 6000), 110);
+  for(let i=0;i<N;i++) zenSpawnParticle(true);
+  zenAnimLoop();
+}
+
+function zenSpawnParticle(randomY=false){
+  const W=ZEN.canvas.width, H=ZEN.canvas.height;
+  ZEN.particles.push({
+    x: Math.random()*W,
+    y: randomY ? Math.random()*H : H + 10,
+    r: 0.4 + Math.random()*1.8,
+    speed: 0.15 + Math.random()*0.35,
+    alpha: 0.04 + Math.random()*0.14,
+    drift: (Math.random()-.5)*0.18,
+    hue: Math.random()<0.15 ? 45 : 0   // occasional gold
+  });
+}
+
+function zenAnimLoop(){
+  if(!ZEN.active) return;
+  const c=ZEN.ctx2d, W=ZEN.canvas.width, H=ZEN.canvas.height;
+  c.clearRect(0,0,W,H);
+  // Deep aurora gradient background
+  const t = Date.now()/1000;
+  const g = c.createRadialGradient(W*.5,H*.5,0,W*.5,H*.5,H*.75);
+  const a1 = 0.06+Math.sin(t*.18)*.03;
+  const a2 = 0.03+Math.cos(t*.13)*.015;
+  g.addColorStop(0, `rgba(14,10,24,${a1+.82})`);
+  g.addColorStop(0.5,`rgba(8,6,16,${a2+.88})`);
+  g.addColorStop(1,  `rgba(0,0,0,0.96)`);
+  c.fillStyle=g; c.fillRect(0,0,W,H);
+  // Soft aurora sweep
+  const gg = c.createRadialGradient(W*.5+Math.sin(t*.07)*W*.15, H*.4+Math.cos(t*.05)*H*.1, 0,
+                                     W*.5, H*.4, H*.7);
+  gg.addColorStop(0, `rgba(60,20,90,${.04+Math.sin(t*.11)*.02})`);
+  gg.addColorStop(.5,`rgba(20,40,60,${.03+Math.cos(t*.09)*.015})`);
+  gg.addColorStop(1, 'rgba(0,0,0,0)');
+  c.fillStyle=gg; c.fillRect(0,0,W,H);
+
+  // Particles
+  for(let i=ZEN.particles.length-1;i>=0;i--){
+    const p=ZEN.particles[i];
+    p.y -= p.speed;
+    p.x += p.drift;
+    p.alpha += (Math.random()-.5)*.003;
+    p.alpha = Math.max(.01,Math.min(.22,p.alpha));
+    if(p.y < -10){ ZEN.particles.splice(i,1); zenSpawnParticle(false); continue; }
+    c.beginPath();
+    c.arc(p.x,p.y,p.r,0,Math.PI*2);
+    if(p.hue===45) c.fillStyle=`rgba(201,168,76,${p.alpha})`;
+    else c.fillStyle=`rgba(180,180,210,${p.alpha})`;
+    c.fill();
+  }
+  ZEN.animFrame = requestAnimationFrame(zenAnimLoop);
+}
+
+// ── Breathing guide ────────────────────────────────────────────────────────
+function zenStartBreath(){
+  clearTimeout(ZEN.breathTimer);
+  ZEN.phase=0;
+  zenNextPhase();
+}
+
+function zenNextPhase(){
+  if(!ZEN.active) return;
+  const el=document.getElementById('zen-phase');
+  const label=ZEN.phaseLabels[ZEN.phase];
+  const dur=ZEN.phaseDurs[ZEN.phase];
+  if(el){
+    el.classList.add('fade');
+    setTimeout(()=>{
+      el.textContent=label;
+      el.classList.remove('fade');
+    },300);
+  }
+  ZEN.breathTimer=setTimeout(()=>{
+    ZEN.phase=(ZEN.phase+1)%4;
+    zenNextPhase();
+  }, dur);
+}
+
+// ── Web Audio generative soundscape ──────────────────────────────────────
+function zenInitAudio(){
+  if(!window.AudioContext&&!window.webkitAudioContext) return;
+  try{
+    ZEN.audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+    ZEN.masterGain = ZEN.audioCtx.createGain();
+    ZEN.masterGain.gain.setValueAtTime(0, ZEN.audioCtx.currentTime);
+    ZEN.masterGain.gain.linearRampToValueAtTime(ZEN.volume, ZEN.audioCtx.currentTime+2.5);
+    ZEN.masterGain.connect(ZEN.audioCtx.destination);
+    zenBuildSound(ZEN.soundMode);
+  }catch(e){}
+}
+
+function zenStopAllNodes(){
+  ZEN.nodes.forEach(n=>{try{n.stop();n.disconnect();}catch(e){}});
+  ZEN.nodes=[];
+}
+
+function zenSetSound(mode){
+  ZEN.soundMode=mode;
+  document.querySelectorAll('.zen-sound-btn').forEach(b=>b.classList.remove('active'));
+  const btn=document.getElementById('zsb-'+mode);
+  if(btn) btn.classList.add('active');
+  if(!ZEN.active) return;
+  zenStopAllNodes();
+  if(mode!=='off'&&ZEN.audioCtx) zenBuildSound(mode);
+}
+
+function zenSetVolume(v){
+  ZEN.volume=parseFloat(v);
+  if(ZEN.masterGain&&ZEN.audioCtx){
+    ZEN.masterGain.gain.setTargetAtTime(ZEN.volume, ZEN.audioCtx.currentTime, 0.1);
+  }
+}
+
+// Creates a noise buffer of given duration (seconds)
+function zenNoiseBuffer(ac, dur, type='brown'){
+  const sr=ac.sampleRate, len=sr*dur;
+  const buf=ac.createBuffer(2,len,sr);
+  for(let ch=0;ch<2;ch++){
+    const d=buf.getChannelData(ch);
+    let last=0;
+    for(let i=0;i<len;i++){
+      const w=(Math.random()*2-1);
+      if(type==='brown'){ last=(last+.02*w)/1.02; d[i]=last*3.5; }
+      else if(type==='pink'){
+        // simple pink approximation
+        last=last*0.997+w*0.003;
+        d[i]=(last+w)*0.5;
+      } else { d[i]=w; } // white
+    }
+  }
+  return buf;
+}
+
+function zenAddOsc(freq, gainVal, type='sine', detune=0){
+  const ac=ZEN.audioCtx;
+  const osc=ac.createOscillator();
+  const g=ac.createGain();
+  osc.type=type; osc.frequency.value=freq; osc.detune.value=detune;
+  g.gain.setValueAtTime(0,ac.currentTime);
+  g.gain.linearRampToValueAtTime(gainVal,ac.currentTime+3);
+  osc.connect(g); g.connect(ZEN.masterGain);
+  osc.start(); ZEN.nodes.push(osc,g);
+  return {osc,g};
+}
+
+function zenAddNoise(type, gainVal, lpFreq=null, hpFreq=null){
+  const ac=ZEN.audioCtx;
+  const buf=zenNoiseBuffer(ac,8,type);
+  const src=ac.createBufferSource();
+  src.buffer=buf; src.loop=true;
+  const g=ac.createGain();
+  g.gain.setValueAtTime(0,ac.currentTime);
+  g.gain.linearRampToValueAtTime(gainVal,ac.currentTime+2.5);
+  let chain=src;
+  if(lpFreq){const f=ac.createBiquadFilter();f.type='lowpass';f.frequency.value=lpFreq;chain.connect(f);chain=f;ZEN.nodes.push(f);}
+  if(hpFreq){const f=ac.createBiquadFilter();f.type='highpass';f.frequency.value=hpFreq;chain.connect(f);chain=f;ZEN.nodes.push(f);}
+  chain.connect(g); g.connect(ZEN.masterGain);
+  src.start(); ZEN.nodes.push(src,g);
+  return {src,g};
+}
+
+// Slow LFO tremolo on a gain node
+function zenTremolo(gainNode, rate, depth){
+  const ac=ZEN.audioCtx;
+  const lfo=ac.createOscillator();
+  const lfoGain=ac.createGain();
+  lfo.frequency.value=rate; lfoGain.gain.value=depth;
+  lfo.connect(lfoGain); lfoGain.connect(gainNode.gain);
+  lfo.start(); ZEN.nodes.push(lfo,lfoGain);
+}
+
+// Chime: single decaying sine tone
+function zenChime(freq, when, dur=3.5){
+  const ac=ZEN.audioCtx;
+  const osc=ac.createOscillator();
+  const env=ac.createGain();
+  osc.type='sine'; osc.frequency.value=freq;
+  env.gain.setValueAtTime(0,when);
+  env.gain.linearRampToValueAtTime(0.06*ZEN.volume,when+.01);
+  env.gain.exponentialRampToValueAtTime(0.0001,when+dur);
+  osc.connect(env); env.connect(ZEN.masterGain);
+  osc.start(when); osc.stop(when+dur);
+  // Don't push to nodes array (self-cleaning)
+}
+
+// Recurring gentle chimes on a pentatonic scale
+function zenScheduleChimes(notes, interval){
+  if(!ZEN.active) return;
+  const ac=ZEN.audioCtx;
+  const idx=Math.floor(Math.random()*notes.length);
+  zenChime(notes[idx], ac.currentTime);
+  // occasional second chime a beat later
+  if(Math.random()<0.3) zenChime(notes[(idx+2)%notes.length], ac.currentTime+1.2);
+  ZEN.chimeTimer=setTimeout(()=>zenScheduleChimes(notes,interval),
+    interval + (Math.random()-.5)*interval*.5);
+}
+
+function zenBuildSound(mode){
+  const ac=ZEN.audioCtx;
+  clearTimeout(ZEN.chimeTimer);
+
+  if(mode==='rain'){
+    // Brown noise base (rain rumble)
+    zenAddNoise('brown',0.22,900);
+    // Pink noise mid layer (rain texture)
+    zenAddNoise('pink',0.15,1800,200);
+    // High white noise (light patter)
+    zenAddNoise('white',0.06,6000,2000);
+    // Occasional thunder-ish sub-bass pulse
+    const sub=zenAddOsc(55,0,'sine');
+    zenTremolo(sub.g, 0.07, 0.015);
+    // Soft chimes in D pentatonic
+    zenScheduleChimes([293.7,329.6,370.0,440.0,493.9,587.3,659.3], 7000);
+  }
+
+  else if(mode==='ocean'){
+    // Deep brown noise (wave body)
+    const base=zenAddNoise('brown',0.25,600);
+    zenTremolo(base.g, 0.09, 0.12); // slow wave swell
+    // Mid pink (surf foam)
+    const mid=zenAddNoise('pink',0.12,2000,100);
+    zenTremolo(mid.g, 0.09, 0.08);
+    // Very low sub drone (ocean depth)
+    const sub=zenAddOsc(38,0.04,'sine');
+    zenTremolo(sub.g, 0.05, 0.02);
+    // Seagull-ish overtone (optional, subtle)
+    const tone=zenAddOsc(528+12,0.01,'sine',7); // gentle high pitch
+    zenTremolo(tone.g,0.18,0.008);
+    zenScheduleChimes([261.6,329.6,392.0,523.3,659.3], 9000);
+  }
+
+  else if(mode==='forest'){
+    // Gentle brown noise (wind through trees)
+    const wind=zenAddNoise('brown',0.14,1200);
+    zenTremolo(wind.g, 0.06, 0.06);
+    // Pink noise (leaves)
+    const leaves=zenAddNoise('pink',0.09,3000,400);
+    zenTremolo(leaves.g,0.12,0.04);
+    // Binaural-ish low drone (earth hum)
+    zenAddOsc(80,0.03,'sine');
+    zenAddOsc(84,0.03,'sine');   // slight detune = beating = calming
+    // Bird-tones: pentatonic highs
+    zenScheduleChimes([659.3,783.9,880.0,1046.5,1318.5], 5500);
+    // Second bird slightly offset
+    setTimeout(()=>zenScheduleChimes([523.3,622.3,698.5,784.0], 8000), 2700);
+  }
+
+  else if(mode==='tone'){
+    // 432Hz root + 528Hz + 639Hz (popular "solfeggio"-ish)
+    const r=zenAddOsc(216,0.07,'sine'); zenTremolo(r.g,0.04,0.01);
+    const r2=zenAddOsc(432,0.05,'sine',3);
+    const t=zenAddOsc(528,0.04,'sine',-4);
+    const s=zenAddOsc(639,0.03,'sine',2);
+    // Very slow beat between close frequencies
+    zenAddOsc(432.5,0.03,'sine');
+    // Soft chimes on harmonics
+    zenScheduleChimes([432,528,639,720,864], 6000);
+    // Sub bass
+    const sub=zenAddOsc(108,0.05,'sine');
+    zenTremolo(sub.g,0.03,0.02);
+  }
+}
+
+// ── Enter / Exit ───────────────────────────────────────────────────────────
+function enterZen(){
+  ZEN.active=true;
+  document.getElementById('zen-overlay').classList.add('active');
+  stopAmbientListen();
+  haptic(80);
+  zenInitCanvas();
+  zenStartBreath();
+  // Unlock audio context on user gesture
+  setTimeout(()=>{
+    if(!ZEN.soundMode||ZEN.soundMode==='off') return;
+    zenInitAudio();
+  }, 400);
+}
+
+function exitZen(){
+  ZEN.active=false;
+  document.getElementById('zen-overlay').classList.remove('active');
+  clearTimeout(ZEN.breathTimer);
+  clearTimeout(ZEN.chimeTimer);
+  cancelAnimationFrame(ZEN.animFrame);
+  // Fade out audio gracefully
+  if(ZEN.masterGain&&ZEN.audioCtx){
+    ZEN.masterGain.gain.linearRampToValueAtTime(0,ZEN.audioCtx.currentTime+1.5);
+    setTimeout(()=>{
+      zenStopAllNodes();
+      try{ZEN.audioCtx.close();}catch(e){}
+      ZEN.audioCtx=null; ZEN.masterGain=null;
+    },1700);
+  }
+  haptic(38);
+}
+
+// ══════════════════════════
+//  V2: AUDIO MATRIX
+// ══════════════════════════
+const V2_AUDIO={slots:[null,null,null,null,null],playing:null,recorder:null,recSlot:-1};
+
+function initAudioMatrix(){
+  const container=document.getElementById('audio-matrix');
+  if(!container||container.dataset.init)return;
+  container.dataset.init='1';
+  container.innerHTML='';
+  for(let i=0;i<5;i++){
+    const saved=V2_AUDIO.slots[i];
+    const div=document.createElement('div');
+    div.className='audio-slot';
+    div.id='slot-'+i;
+    div.innerHTML=`
+      <div class="slot-num">${i+1}</div>
+      <div class="slot-label${saved?' has-audio':''}" id="slot-lbl-${i}">${saved?saved.name:'Empty slot'}</div>
+      <div class="slot-actions">
+        <button class="slot-btn play-btn" id="slot-play-${i}" onclick="playSlot(${i})" title="Play" ${!saved?'disabled style="opacity:.35"':''}>▶</button>
+        <button class="slot-btn rec-btn" id="slot-rec-${i}" onclick="recSlot(${i})" title="Record">⏺</button>
+        <button class="slot-btn" onclick="uploadSlot(${i})" title="Upload">⬆</button>
+        <button class="slot-btn" onclick="clearSlot(${i})" title="Clear" ${!saved?'disabled style="opacity:.35"':''}>✕</button>
+      </div>`;
+    container.appendChild(div);
+  }
+}
+
+function playSlot(i){
+  const slot=V2_AUDIO.slots[i];if(!slot)return;
+  if(V2_AUDIO.playing){V2_AUDIO.playing.pause();V2_AUDIO.playing.currentTime=0;
+    document.querySelectorAll('.play-btn.playing').forEach(b=>{b.classList.remove('playing');b.textContent='▶';});
+    if(V2_AUDIO.playing._slotIdx===i){V2_AUDIO.playing=null;return;}
+  }
+  const audio=new Audio(slot.url);
+  audio._slotIdx=i;
+  V2_AUDIO.playing=audio;
+  const btn=document.getElementById('slot-play-'+i);
+  btn.classList.add('playing');btn.textContent='⏸';
+  audio.onended=()=>{btn.classList.remove('playing');btn.textContent='▶';V2_AUDIO.playing=null;};
+  audio.play();haptic(30);
+}
+
+function recSlot(i){
+  if(V2_AUDIO.recSlot===i){stopRecSlot();return;}
+  if(V2_AUDIO.recSlot>=0)stopRecSlot();
+  if(!navigator.mediaDevices){toast('Mic not available');return;}
+  navigator.mediaDevices.getUserMedia({audio:true}).then(stream=>{
+    const chunks=[];
+    const mr=new MediaRecorder(stream);
+    V2_AUDIO.recorder=mr;V2_AUDIO.recSlot=i;
+    const btn=document.getElementById('slot-rec-'+i);
+    btn.classList.add('recording');toast('🔴 Recording slot '+(i+1)+'…');haptic(50);
+    mr.ondataavailable=e=>chunks.push(e.data);
+    mr.onstop=()=>{
+      const blob=new Blob(chunks,{type:'audio/webm'});
+      const url=URL.createObjectURL(blob);
+      V2_AUDIO.slots[i]={name:'Recording '+(i+1),url};
+      refreshSlot(i);stream.getTracks().forEach(t=>t.stop());
+      btn.classList.remove('recording');V2_AUDIO.recSlot=-1;V2_AUDIO.recorder=null;
+      toast('✅ Saved to slot '+(i+1));haptic(60);
+    };
+    mr.start();
+  }).catch(()=>toast('Mic permission denied'));
+}
+
+function stopRecSlot(){
+  if(V2_AUDIO.recorder&&V2_AUDIO.recorder.state==='recording')V2_AUDIO.recorder.stop();
+}
+
+function uploadSlot(i){
+  const inp=document.createElement('input');
+  inp.type='file';inp.accept='audio/*';
+  inp.onchange=e=>{
+    const f=e.target.files[0];if(!f)return;
+    const url=URL.createObjectURL(f);
+    V2_AUDIO.slots[i]={name:f.name.replace(/\.[^.]+$/,''),url};
+    refreshSlot(i);toast('✅ '+f.name+' → slot '+(i+1));haptic(50);
+  };
+  inp.click();
+}
+
+function clearSlot(i){
+  V2_AUDIO.slots[i]=null;
+  refreshSlot(i);toast('Slot '+(i+1)+' cleared');
+}
+
+function refreshSlot(i){
+  const slot=V2_AUDIO.slots[i];
+  const lbl=document.getElementById('slot-lbl-'+i);
+  const pb=document.getElementById('slot-play-'+i);
+  const cb=document.querySelector('#slot-'+i+' .slot-btn:last-child');
+  if(lbl){lbl.textContent=slot?slot.name:'Empty slot';lbl.className='slot-label'+(slot?' has-audio':'');}
+  if(pb){pb.disabled=!slot;pb.style.opacity=slot?'1':'.35';}
+  if(cb){cb.disabled=!slot;cb.style.opacity=slot?'1':'.35';}
+}
+
+function silenceAll(){
+  if(V2_AUDIO.playing){V2_AUDIO.playing.pause();V2_AUDIO.playing.currentTime=0;V2_AUDIO.playing=null;}
+  document.querySelectorAll('.play-btn.playing').forEach(b=>{b.classList.remove('playing');b.textContent='▶';});
+  stopRecSlot();haptic(80);toast('🔇 All audio silenced');
+}
+
+// ══════════════════════════
+//  V2: GEO-SENSE
+// ══════════════════════════
+const V2_GEO={checked:false,lat:null,lng:null,currentCtx:'Home',locKey:null};
+function initGeoSense(){
+  if(V2_GEO.checked)return;
+  if(!navigator.geolocation){document.getElementById('geo-status').textContent='Unavailable';return;}
+  document.getElementById('geo-status').textContent='Detecting…';
+  document.getElementById('geo-status').classList.add('gps-on');
+  navigator.geolocation.getCurrentPosition(pos=>{
+    V2_GEO.checked=true;
+    V2_GEO.lat=pos.coords.latitude;
+    V2_GEO.lng=pos.coords.longitude;
+    V2_GEO.locKey='geo-ctx-'+Math.round(pos.coords.latitude*10)/10+','+Math.round(pos.coords.longitude*10)/10;
+    document.getElementById('geo-status').textContent='Located';
+    document.getElementById('geo-empty').style.display='none';
+    document.getElementById('geo-location-display').style.display='block';
+    // Try reverse geocode for friendly name, fallback to coords
+    const coordLabel=pos.coords.latitude.toFixed(3)+'°, '+pos.coords.longitude.toFixed(3)+'°';
+    document.getElementById('geo-label-text').textContent=coordLabel;
+    fetch(`https://nominatim.openstreetmap.org/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&format=json`)
+      .then(r=>r.json())
+      .then(data=>{
+        const addr=data.address||{};
+        const label=addr.road||addr.neighbourhood||addr.suburb||addr.town||addr.city||coordLabel;
+        document.getElementById('geo-label-text').textContent=label;
+      })
+      .catch(()=>{});// keep coords label if fetch fails
+    detectGeoContext(pos.coords.latitude,pos.coords.longitude);
+  },()=>{
+    document.getElementById('geo-status').textContent='Denied';
+    document.getElementById('geo-status').classList.remove('gps-on');
+    document.getElementById('geo-empty').textContent='Location access denied. Enable in browser settings.';
+  },{enableHighAccuracy:false,timeout:8000});
+}
+
+function triggerGeoSense(){
+  V2_GEO.checked=false;
+  document.getElementById('geo-location-display').style.display='none';
+  document.getElementById('geo-empty').style.display='block';
+  document.getElementById('geo-empty').textContent='Detecting your location…';
+  initGeoSense();
+}
+
+const GEO_CONTEXTS={
+  Home:{em:'🏠',btns:[{e:'📺',t:'Can I watch TV?'},{e:'🛁',t:'I need a bath'},{e:'🍽️',t:'I want food'},{e:'🛏️',t:'I want to go to bed'}]},
+  School:{em:'🎒',btns:[{e:'🆘',t:'I need help'},{e:'🚽',t:'Bathroom break'},{e:'⏸',t:'I need a break'},{e:'✅',t:'I finished'}]},
+  Medical:{em:'🏥',btns:[{e:'🤕',t:'It hurts here'},{e:'😰',t:'I feel anxious'},{e:'💊',t:'I need medicine'},{e:'🆘',t:'Emergency'}]},
+  Restaurant:{em:'🍽️',btns:[{e:'🍽️',t:'I want to order'},{e:'💧',t:'Water please'},{e:'🚽',t:'Restroom'},{e:'🏠',t:'I want to go home'}]},
+  Park:{em:'🌳',btns:[{e:'🛝',t:'I want to play'},{e:'🤸',t:'I want to swing'},{e:'🏠',t:'I want to go home'},{e:'🚽',t:'Bathroom'}]},
+  Store:{em:'🛒',btns:[{e:'🛒',t:'I want that'},{e:'🚪',t:'Time to leave'},{e:'🏠',t:'Home please'},{e:'💰',t:'I have my card'}]},
+  Library:{em:'📚',btns:[{e:'📖',t:'I want this book'},{e:'🤫',t:'Please be quiet'},{e:'🚽',t:'Restroom'},{e:'🏠',t:'Time to go'}]},
+  Therapy:{em:'🧠',btns:[{e:'😊',t:'I feel good today'},{e:'😞',t:'I feel upset'},{e:'⏸',t:'I need a break'},{e:'✅',t:'I am done'}]}
+};
+
+function detectGeoContext(lat,lng){
+  // Check for saved override for this location key
+  const locKey='geo-ctx-'+Math.round(lat*10)/10+','+Math.round(lng*10)/10;
+  const saved=localStorage.getItem(locKey);
+  // Real production would reverse-geocode; here we use saved override or smart guess
+  const ctx=saved||(lat?inferContextFromCoords(lat,lng):'Home');
+  V2_GEO.currentCtx=ctx;
+  V2_GEO.locKey=locKey;
+  applyGeoContext(ctx);
+}
+
+function inferContextFromCoords(lat,lng){
+  // Placeholder heuristic — production would call a geocoding/POI API
+  const h=new Date().getHours();
+  if(h>=8&&h<=15)return'School';
+  if(h>=18||h<=7)return'Home';
+  return'Home';
+}
+
+function applyGeoContext(ctx){
+  const badge=document.getElementById('geo-badge');
+  if(badge)badge.textContent=ctx;
+  const data=GEO_CONTEXTS[ctx]||GEO_CONTEXTS.Home;
+  renderAuraBtns('geo-btns',data.btns);
+  buildGeoCtxGrid(ctx);
+}
+
+function buildGeoCtxGrid(currentCtx){
+  const grid=document.getElementById('geo-ctx-grid');
+  if(!grid)return;
+  grid.innerHTML='';
+  Object.entries(GEO_CONTEXTS).forEach(([name,data])=>{
+    const item=document.createElement('button');
+    item.className='geo-ctx-item'+(name===currentCtx?' current':'');
+    item.innerHTML=`<span class="ctx-em">${data.em}</span><span class="ctx-lbl">${name}</span>`;
+    item.onclick=()=>selectGeoContext(name);
+    grid.appendChild(item);
+  });
+}
+
+function toggleGeoCtxPicker(){
+  const picker=document.getElementById('geo-ctx-picker');
+  picker.classList.toggle('open');
+}
+
+function selectGeoContext(ctx){
+  V2_GEO.currentCtx=ctx;
+  // Save override for this location
+  if(V2_GEO.locKey)localStorage.setItem(V2_GEO.locKey,ctx);
+  applyGeoContext(ctx);
+  // Close picker
+  document.getElementById('geo-ctx-picker').classList.remove('open');
+  toast('📍 Context set to '+ctx);haptic(40);
+}
+
+// ══════════════════════════
+//  V2: VISUAL-SENSE (camera)
+// ══════════════════════════
+let V2_visualScanning=false;
+let V2_cameraStream=null;
+
+function triggerVisualScan(){
+  if(V2_visualScanning)return;
+  if(!S.groqKey){toast('⚠️ Add Groq API key in Settings');return;}
+  openCameraModal();
+}
+
+function openCameraModal(){
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){
+    toast('Camera not available in this browser');return;
+  }
+  const modal=document.getElementById('camera-modal');
+  modal.classList.add('open');
+  navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'}},audio:false})
+    .then(stream=>{
+      V2_cameraStream=stream;
+      const vid=document.getElementById('camera-video');
+      vid.srcObject=stream;
+    })
+    .catch(err=>{
+      modal.classList.remove('open');
+      toast('⚠️ Camera permission denied');
+    });
+}
+
+function closeCameraModal(){
+  if(V2_cameraStream){
+    V2_cameraStream.getTracks().forEach(t=>t.stop());
+    V2_cameraStream=null;
+  }
+  const vid=document.getElementById('camera-video');
+  vid.srcObject=null;
+  document.getElementById('camera-modal').classList.remove('open');
+  resetVisualScan();
+}
+
+function captureFrame(){
+  const vid=document.getElementById('camera-video');
+  const canvas=document.getElementById('camera-canvas');
+  canvas.width=vid.videoWidth||640;
+  canvas.height=vid.videoHeight||480;
+  const ctx=canvas.getContext('2d');
+  ctx.drawImage(vid,0,0,canvas.width,canvas.height);
+  closeCameraModal();
+  V2_visualScanning=true;
+  const btn=document.getElementById('visual-scan-btn');
+  btn.classList.add('scanning');btn.innerHTML='<span>🤖</span> Analyzing scene…';
+  document.getElementById('visual-status').textContent='AI thinking…';
+  document.getElementById('visual-status').classList.add('on');
+  canvas.toBlob(blob=>{
+    if(!blob){resetVisualScan();return;}
+    analyzeImageWithGroq(blob).finally(resetVisualScan);
+  },'image/jpeg',0.85);
+}
+
+function resetVisualScan(){
+  V2_visualScanning=false;
+  const btn=document.getElementById('visual-scan-btn');
+  btn.classList.remove('scanning');btn.innerHTML='<span>📸</span> Scan Scene with Camera';
+  document.getElementById('visual-status').textContent='Ready';
+  document.getElementById('visual-status').classList.remove('on');
+}
+
+async function analyzeImageWithGroq(file){
+  const reader=new FileReader();
+  const b64=await new Promise(res=>{reader.onload=e=>res(e.target.result.split(',')[1]);reader.readAsDataURL(file);});
+  document.getElementById('visual-status').textContent='AI thinking…';
+  try{
+    const resp=await fetch('https://api.groq.com/openai/v1/chat/completions',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+S.groqKey},
+      body:JSON.stringify({
+        model:'meta-llama/llama-4-scout-17b-16e-instruct',
+        max_tokens:300,
+        messages:[{role:'user',content:[
+          {type:'image_url',image_url:{url:'data:image/jpeg;base64,'+b64}},
+          {type:'text',text:'You are an AAC (Augmentative Communication) assistant. Look at this image and generate 4 communication buttons for a non-verbal person in this context. Return JSON only: {"scene":"brief scene description","buttons":[{"type":"identity","text":"What is this?"},{"type":"request","text":"I want..."},{"type":"social","text":"..."},{"type":"comment","text":"..."}]}. Make the text natural and useful for AAC communication.'}
+        ]}]
+      })
+    });
+    const data=await resp.json();
+    const content=data.choices?.[0]?.message?.content||'';
+    const cleaned=content.replace(/```json|```/g,'').trim();
+    const parsed=JSON.parse(cleaned);
+    document.getElementById('visual-preview').style.display='block';
+    document.getElementById('visual-preview-text').textContent=parsed.scene||'Scene analyzed';
+    document.getElementById('visual-status').textContent='Ready';
+    renderAuraBtns('visual-btns',parsed.buttons.map(b=>({e:'',t:b.text,type:b.type})));
+    haptic(60);
+  }catch(err){
+    document.getElementById('visual-status').textContent='Error';
+    toast('⚠️ Could not analyze image. Check Groq API key.');
+    // Fallback demo buttons
+    renderAuraBtns('visual-btns',[
+      {e:'🔍',t:'What is this?',type:'identity'},
+      {e:'🙋',t:'I want that',type:'request'},
+      {e:'💬',t:'Can you help me?',type:'social'},
+      {e:'👍',t:'That looks good',type:'comment'}
+    ]);
+  }
+}
+
+// ══════════════════════════
+//  V2: AMBIENT-SENSE
+// ══════════════════════════
+let V2_ambientActive=false;let V2_ambientBuffer=[];let V2_ambientTimer=null;
+function toggleAmbientListen(){
+  if(V2_ambientActive){stopAmbientListen();return;}
+  if(!S.groqKey){toast('⚠️ Add Groq API key in Settings');return;}
+  if(!window.SpeechRecognition&&!window.webkitSpeechRecognition){
+    toast('Speech recognition not available in this browser');return;
+  }
+  V2_ambientActive=true;
+  const btn=document.getElementById('ambient-listen-btn');
+  btn.classList.add('active-listen');btn.innerHTML='<span>🔴</span> Listening… (tap to stop)';
+  document.getElementById('ambient-status').textContent='Listening';
+  document.getElementById('ambient-status').classList.add('listening');
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  const recog=new SR();recog.continuous=true;recog.interimResults=true;
+  recog.onresult=e=>{
+    let transcript='';
+    for(let i=e.resultIndex;i<e.results.length;i++){transcript+=e.results[i][0].transcript;}
+    document.getElementById('ambient-preview').style.display='block';
+    document.getElementById('ambient-preview-text').textContent=transcript;
+    clearTimeout(V2_ambientTimer);
+    V2_ambientTimer=setTimeout(()=>processAmbientText(transcript),2000);
+  };
+  recog.onerror=()=>stopAmbientListen();
+  recog.onend=()=>{if(V2_ambientActive)recog.start();}; // rolling buffer
+  recog.start();
+  window._ambientRecog=recog;
+}
+
+function stopAmbientListen(){
+  V2_ambientActive=false;
+  if(window._ambientRecog)try{window._ambientRecog.stop()}catch(e){}
+  clearTimeout(V2_ambientTimer);
+  const btn=document.getElementById('ambient-listen-btn');
+  if(btn){btn.classList.remove('active-listen');btn.innerHTML='<span>🔊</span> Start Listening (10-sec buffer)';}
+  const status=document.getElementById('ambient-status');
+  if(status){status.textContent='Ready';status.classList.remove('listening');}
+}
+
+async function processAmbientText(text){
+  if(!text||text.length<5)return;
+  document.getElementById('ambient-status').textContent='AI thinking…';
+  try{
+    const resp=await fetch('https://api.groq.com/openai/v1/chat/completions',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+S.groqKey},
+      body:JSON.stringify({
+        model:'llama3-8b-8192',max_tokens:200,
+        messages:[{role:'user',content:`You are an AAC communication assistant. Someone nearby said: "${text}". Generate 4 quick response buttons for a non-verbal person to respond. Return JSON only: {"buttons":[{"text":"response 1"},{"text":"response 2"},{"text":"response 3"},{"text":"response 4"}]}. Make responses short, natural, and appropriate.`}]
+      })
+    });
+    const data=await resp.json();
+    const content=data.choices?.[0]?.message?.content||'';
+    const cleaned=content.replace(/```json|```/g,'').trim();
+    const parsed=JSON.parse(cleaned);
+    document.getElementById('ambient-status').textContent='Listening';
+    renderAuraBtns('ambient-btns',parsed.buttons.map((b,i)=>({e:['👍','👋','💬','🤔'][i]||'💬',t:b.text,type:'choice-btn'})));
+    haptic(50);
+  }catch(err){
+    document.getElementById('ambient-status').textContent='Listening';
+    // Fallback
+    const words=text.split(' ').filter(w=>w.length>2);
+    if(words.length>0){
+      renderAuraBtns('ambient-btns',[
+        {e:'✅',t:'Yes',type:'choice-btn'},{e:'❌',t:'No',type:'choice-btn'},
+        {e:'🤔',t:'Maybe',type:'choice-btn'},{e:'⏳',t:'Give me a moment',type:'choice-btn'}
+      ]);
+    }
+  }
+}
+
+// ══════════════════════════
+//  V2: AURA BUTTON RENDERER
+// ══════════════════════════
+function renderAuraBtns(containerId,items){
+  const container=document.getElementById(containerId);
+  if(!container)return;
+  container.innerHTML='';
+  items.forEach(item=>{
+    const btn=document.createElement('button');
+    btn.className='aura-gen-btn '+(item.type||'');
+    btn.innerHTML=`<span class="ag-tag">${item.type||'phrase'}</span>${item.e?'<span style="font-size:20px">'+item.e+'</span>':''}<span>${escapeHtml(item.t)}</span>`;
+    btn.onclick=()=>{addToSentence(item.t);haptic(38);};
+    container.appendChild(btn);
+  });
+}
+
+function addToSentence(text){
+  S.sentence=S.sentence.concat(text.split(' ').filter(Boolean));
+  renderBar();toast('Added: '+text.substring(0,25)+(text.length>25?'…':''));
+}
+
+function escapeHtml(str){
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function toggleAuraSection(section){}// collapsing reserved for future
+
 function init(){
   injectIcons();setAppleIcon();
   loadData();
@@ -1407,6 +2701,11 @@ function init(){
 
   // Always render app content first (it sits behind the splash)
   renderCats();renderSyms();showView('cats');
+  // V2: restore mode
+  const savedMode=localStorage.getItem('jvox-mode')||'standard';
+  if(savedMode==='aura'){setMode('aura');}
+  // V2: init audio matrix on regulate tab entry
+  document.getElementById('vb-reg')?.addEventListener('click',()=>setTimeout(initAudioMatrix,100));
   if(window.speechSynthesis){window.speechSynthesis.onvoiceschanged=populateVoices;populateVoices()}
 
   if(saved){
@@ -1436,16 +2735,9 @@ function init(){
     setTimeout(()=>bs.classList.add('bs-in'), 50);
   }
 
-  // PWA service worker (inline)
+  // PWA service worker — registers sw.js from same directory
   if('serviceWorker' in navigator){
-    const swCode=`
-      const CACHE='jvox-v1';
-      self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(['.']))));
-      self.addEventListener('fetch',e=>e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request))));
-    `;
-    const blob=new Blob([swCode],{type:'application/javascript'});
-    const url=URL.createObjectURL(blob);
-    navigator.serviceWorker.register(url).catch(()=>{});
+    navigator.serviceWorker.register('./sw.js').catch(()=>{});
   }
 }
 document.addEventListener('DOMContentLoaded',init);

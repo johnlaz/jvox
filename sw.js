@@ -1,59 +1,84 @@
-// J-VOX AAC — Service Worker v1.0
-const CACHE_NAME = 'jvox-v1.0';
-const ASSETS = [
+/**
+ * J-VOX AAC v2 — Service Worker
+ * Cache-first strategy for offline support.
+ * Update CACHE_NAME version string when deploying new releases
+ * to force clients to pick up the latest assets.
+ */
+
+const CACHE_NAME = 'jvox-v2.1';
+
+// Assets to pre-cache on install
+const PRECACHE_URLS = [
   './index.html',
-  './manifest.json',
-  './icons/icon-192.png',
-  './icons/icon-512.png'
+  // Google Fonts are fetched dynamically; the SW will cache them on first use.
 ];
 
-// Install: cache all assets
+// ── Install: pre-cache core shell ──────────────────────────────────────────
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(ASSETS))
-      .then(() => self.skipWaiting())
+      .then(cache => cache.addAll(PRECACHE_URLS))
+      .then(() => self.skipWaiting())   // activate immediately
   );
 });
 
-// Activate: clear old caches
+// ── Activate: purge old caches ──────────────────────────────────────────────
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(keys =>
       Promise.all(
-        keys.filter(key => key !== CACHE_NAME)
-            .map(key => caches.delete(key))
+        keys
+          .filter(key => key !== CACHE_NAME)
+          .map(key => caches.delete(key))
       )
-    ).then(() => self.clients.claim())
+    ).then(() => self.clients.claim())  // take control of all open tabs
   );
 });
 
-// Fetch: cache-first for local assets, network-first for external (fonts, Groq API)
+// ── Fetch: cache-first, network fallback ───────────────────────────────────
 self.addEventListener('fetch', event => {
   const url = new URL(event.request.url);
 
-  // Always go to network for API calls and fonts
-  if (url.hostname.includes('groq.com') ||
-      url.hostname.includes('googleapis.com') ||
-      url.hostname.includes('gstatic.com')) {
-    return; // let browser handle it normally
+  // Never intercept API calls (Groq, Nominatim, etc.)
+  if (
+    url.hostname === 'api.groq.com' ||
+    url.hostname === 'nominatim.openstreetmap.org' ||
+    url.hostname === 'fonts.googleapis.com' ||
+    url.hostname === 'fonts.gstatic.com'
+  ) {
+    // Network-first for external APIs; cache successful responses for fonts
+    if (url.hostname.includes('fonts')) {
+      event.respondWith(
+        caches.open(CACHE_NAME).then(cache =>
+          cache.match(event.request).then(cached => {
+            const networkFetch = fetch(event.request).then(response => {
+              if (response.ok) cache.put(event.request, response.clone());
+              return response;
+            });
+            return cached || networkFetch;
+          })
+        )
+      );
+    }
+    // For API calls: pass through, no caching
+    return;
   }
 
+  // Cache-first for everything else (app shell, assets)
   event.respondWith(
     caches.match(event.request).then(cached => {
       if (cached) return cached;
       return fetch(event.request).then(response => {
-        // Cache successful GET responses for app files
-        if (response.ok && event.request.method === 'GET') {
-          const clone = response.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
+        // Only cache valid GET responses
+        if (!response || response.status !== 200 || event.request.method !== 'GET') {
+          return response;
         }
+        const toCache = response.clone();
+        caches.open(CACHE_NAME).then(cache => cache.put(event.request, toCache));
         return response;
       }).catch(() => {
-        // Offline fallback — return index.html for navigation requests
-        if (event.request.mode === 'navigate') {
-          return caches.match('./index.html');
-        }
+        // Offline fallback: return the main app shell
+        return caches.match('./index.html');
       });
     })
   );
