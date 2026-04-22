@@ -5,12 +5,15 @@
  * to force clients to pick up the latest assets.
  */
 
-const CACHE_NAME = 'jvox-v2.1';
+const CACHE_NAME = 'jvox-v2.2';
 
-// Assets to pre-cache on install
+// Assets to pre-cache on install — everything needed to pass PWA installability checks offline
 const PRECACHE_URLS = [
   './index.html',
-  // Google Fonts are fetched dynamically; the SW will cache them on first use.
+  './manifest.json',
+  './icon-192.png',
+  './icon-512.png',
+  './sw.js',
 ];
 
 // ── Install: pre-cache core shell ──────────────────────────────────────────
