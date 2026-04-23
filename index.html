@@ -176,11 +176,16 @@ body{font-family:var(--f);background:var(--bg);color:var(--txt);-webkit-font-smo
 #app{height:100%;display:flex;flex-direction:column;overflow:hidden}
 
 /* ══ HEADER ══ */
-#hdr{flex-shrink:0;display:flex;align-items:center;gap:8px;padding:6px 12px;background:var(--bg2);border-bottom:1px solid var(--border)}
+#hdr{flex-shrink:0;display:flex;align-items:center;gap:6px;padding:6px 10px;background:var(--bg2);border-bottom:1px solid var(--border);min-width:0}
 .hdr-icon{width:30px;height:30px;border-radius:20%;overflow:hidden;flex-shrink:0}
 .hdr-icon img{width:100%;height:100%;object-fit:cover;display:block}
 #hdr-logo{font-family:var(--fh);font-size:16px;color:var(--accent);letter-spacing:.06em;flex-shrink:0}
 .theme-story #hdr-logo{font-size:18px}
+/* On narrow mobile hide the text logo to free space for controls */
+@media(max-width:400px){
+  #hdr-logo{display:none}
+  .hdr-icon{width:26px;height:26px}
+}
 #edit-banner{display:none;flex-shrink:0;background:#c9a84c;padding:5px 12px;align-items:center;justify-content:space-between;gap:8px}
 body.theme-story #edit-banner{background:#ff8c00}
 #edit-banner.show{display:flex}
@@ -403,20 +408,26 @@ body.theme-story #toast{background:#fff;border:1px solid rgba(255,140,0,.3);colo
 
 body.mic-on #mic-btn{background:rgba(0,180,160,.2)!important;border-color:var(--teal)!important;color:var(--teal)!important;animation:micP 1s infinite}
 @keyframes micP{0%,100%{box-shadow:0 0 0 0 rgba(0,180,160,.45)}50%{box-shadow:0 0 0 6px rgba(0,180,160,0)}}
-.ibtn{width:32px;height:32px;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:var(--txt2);display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .14s;cursor:pointer}
+.ibtn{width:32px;height:32px;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:var(--txt2);display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .14s;cursor:pointer;flex-shrink:0}
 .theme-story .ibtn{background:rgba(255,140,0,.06)}
 .ibtn:hover{border-color:var(--border2);color:var(--txt)}.ibtn:active{transform:scale(.9)}
 
 /* ══ V2: MODE TOGGLE ══ */
 #mode-toggle{
-  display:flex;align-items:center;gap:6px;padding:3px 4px;
+  display:flex;align-items:center;gap:4px;padding:3px 4px;
   border-radius:20px;border:1px solid var(--border2);background:var(--bg3);
   flex-shrink:0;
 }
 .mt-btn{
-  padding:4px 11px;border-radius:16px;font-size:11px;font-weight:700;
-  letter-spacing:.04em;text-transform:uppercase;transition:all .2s;
+  padding:4px 10px;border-radius:16px;font-size:11px;font-weight:700;
+  letter-spacing:.03em;text-transform:uppercase;transition:all .2s;
   border:none;cursor:pointer;background:transparent;color:var(--txt3);
+  white-space:nowrap;
+}
+/* Even tighter on very narrow screens */
+@media(max-width:400px){
+  .mt-btn{padding:4px 7px;font-size:10px;letter-spacing:0}
+  #mode-toggle{gap:2px;padding:2px 3px}
 }
 .mt-btn.active{
   background:linear-gradient(135deg,var(--gold),var(--gold2));
@@ -459,7 +470,7 @@ body.theme-story .mt-btn.active{color:#fff}
 .aura-sec-hdr .aura-status.listening{background:rgba(220,80,80,.15);border-color:var(--red);color:var(--red);animation:pulseAnim .9s infinite}
 .aura-sec-hdr .aura-status.gps-on{background:rgba(124,92,191,.15);border-color:var(--purple);color:var(--purple)}
 
-.aura-sec-body{padding:12px 14px}
+.aura-sec-body{padding:12px 14px;text-align:center}
 .aura-trigger-btn{
   width:100%;padding:10px;border-radius:var(--r);
   border:1.5px dashed var(--border2);background:transparent;
@@ -517,17 +528,19 @@ body.theme-story .mt-btn.active{color:#fff}
 .aura-preview{
   border-radius:9px;background:var(--bg4);border:1px solid var(--border);
   padding:9px 12px;font-size:12px;color:var(--txt2);margin-top:8px;line-height:1.4;
+  text-align:center;
 }
-.aura-preview strong{color:var(--txt);font-size:11px;text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:3px}
+.aura-preview strong{color:var(--txt);font-size:11px;text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:3px;text-align:center}
 
 /* Geo sense */
 .geo-location{
   display:flex;align-items:center;gap:8px;padding:9px 12px;
   border-radius:9px;background:var(--bg4);border:1px solid var(--border);
   font-size:13px;color:var(--txt2);margin-bottom:10px;
+  justify-content:center;
 }
 .geo-location .geo-icon{font-size:18px}
-.geo-label{flex:1}
+.geo-label{flex:0 1 auto;text-align:center}
 .geo-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;background:rgba(124,92,191,.15);color:var(--purple);border:1px solid rgba(124,92,191,.3)}
 
 /* ══ V2: REGULATE TAB VIEW ══ */
@@ -864,12 +877,12 @@ body.theme-story #vb-aura.on{color:#7c3aed;border-bottom-color:#7c3aed}
   <header id="hdr">
     <div class="hdr-icon"><img id="hdr-img" src="" alt=""></div>
     <div id="hdr-logo">J-VOX <span style="font-size:10px;opacity:.5;vertical-align:middle;font-family:var(--fm)">v2</span></div>
-    <div style="flex:1"></div>
+    <div style="flex:1;min-width:4px"></div>
     <div id="mode-toggle">
       <button class="mt-btn" id="mt-std" onclick="setMode('standard')">Standard</button>
       <button class="mt-btn mt-aura" id="mt-aura" onclick="setMode('aura')">✦ Aura</button>
     </div>
-    <div style="display:flex;gap:6px;margin-left:6px">
+    <div style="display:flex;gap:5px;margin-left:5px;flex-shrink:0">
       <button class="ibtn" id="mic-btn" onclick="toggleMic()">🎤</button>
       <button class="ibtn" onclick="openHistory()">📋</button>
       <button class="ibtn" onclick="openSettings()">⚙️</button>
